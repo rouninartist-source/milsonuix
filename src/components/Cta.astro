@@ -1,0 +1,28 @@
+---
+import { site } from "../data/site";
+import { ui, href, type Lang } from "../data/i18n";
+import Button from "./Button.astro";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+<section class="container section cta">
+  <div class="grid">
+    <p class="cta__lead statement--lg" data-reveal>{t.cta.lead}</p>
+    <div class="cta__actions" data-reveal style="--delay:120ms">
+      <Button href={href(lang, "/contact")} icon="arrow" variant="primary">{t.cta.start}</Button>
+      <a href={`mailto:${site.email}`} class="cta__mail small">{site.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__lead { grid-column: 1 / -1; max-width: 18ch; }
+  .cta__actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 28px; }
+  .cta__mail { color: var(--ink-3); transition: color 0.3s; }
+  .cta__mail:hover { color: var(--frost); }
+  @media (min-width: 900px) {
+    .cta__lead { grid-column: 1 / span 8; }
+    .cta__actions { grid-column: 1 / -1; }
+  }
+</style>

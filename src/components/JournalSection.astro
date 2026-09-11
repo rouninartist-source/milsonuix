@@ -1,0 +1,26 @@
+---
+import { posts } from "../data/posts";
+import { ui, href, pick, type Lang } from "../data/i18n";
+import PostCard from "./PostCard.astro";
+import Button from "./Button.astro";
+import SectionRule from "./SectionRule.astro";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const latest = posts.slice(0, 3);
+---
+<section class="container section journal">
+  <SectionRule n="04" label={t.journal.label} />
+  <div class="journal__head">
+    <h2 class="statement" data-reveal>{pick(latest[0].title, lang)}</h2>
+    <Button href={href(lang, "/journal")} icon="enter" size="sm">{t.journal.all}</Button>
+  </div>
+  <div class="scroller journal__cards">
+    {latest.map((p) => <PostCard post={p} lang={lang} />)}
+  </div>
+</section>
+
+<style>
+  .journal__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; margin-block: clamp(28px, 4vw, 56px) 28px; }
+  .journal__head h2 { max-width: 22ch; }
+</style>

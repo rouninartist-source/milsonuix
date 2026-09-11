@@ -1,0 +1,31 @@
+---
+import type { Post } from "../data/posts";
+import { ui, href, pick, formatDate, type Lang } from "../data/i18n";
+import Icon from "./Icon.astro";
+interface Props { post: Post; lang: Lang; class?: string }
+const { post, lang, class: cls } = Astro.props;
+const t = ui[lang];
+---
+<a href={href(lang, `/journal/${post.slug}`)} class:list={["card", cls]} data-reveal>
+  <span class="card__media media media--portrait media--scrim">
+    <img src={post.cover} alt="" loading="lazy" />
+  </span>
+  <span class="card__chips">
+    <span class="chip chip--dot">{pick(post.tag, lang)}</span>
+    <span class="chip"><Icon name="calendar" />{formatDate(post.date, lang)}</span>
+  </span>
+  <span class="card__body">
+    <span class="card__title lede">{pick(post.title, lang)}</span>
+    <span class="btn btn--sm card__cta"><Icon name="enter" />{t.journal.read}</span>
+  </span>
+</a>
+
+<style>
+  .card { position: relative; display: block; border-radius: var(--radius); overflow: hidden; }
+  .card__media img { filter: brightness(0.82); transition: transform 1.2s var(--ease); }
+  .card:hover .card__media img { transform: scale(1.04); }
+  .card__chips { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .card__body { position: absolute; left: 14px; right: 14px; bottom: 14px; display: grid; gap: 14px; }
+  .card__title { color: var(--frost); text-wrap: balance; }
+  .card__cta { justify-self: start; }
+</style>

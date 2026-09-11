@@ -21,7 +21,6 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
       else toggles[0].focus();
     };
     toggles.forEach((t) => t.addEventListener("click", () => set(!menu.classList.contains("is-open"))));
-    $$<HTMLAnchorElement>("[data-menu-close]", menu).forEach((a) => a.addEventListener("click", () => set(false)));
     addEventListener("keydown", (e) => e.key === "Escape" && menu.classList.contains("is-open") && set(false));
   }
 }
@@ -83,16 +82,23 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
   }
 }
 
-/* ─── Hero: discipline pills switch the giant strip + backdrop ─── */
+/* ─── Hero: "Watch my work on" pills switch the giant strip + backdrop ─── */
 {
   const hero = $<HTMLElement>("[data-hero]");
   if (hero) {
     const pills = $$<HTMLButtonElement>("[data-topic]", hero);
     const words = $$<HTMLElement>("[data-word]", hero);
     const images = $$<HTMLImageElement>("[data-backdrop]", hero);
+    const clock = $<HTMLElement>("[data-clock]", hero);
+    const durations: Record<string, number> = { brand: 83, product: 96, motion: 71 };
     let active: string | null = null;
+    let elapsed = 0;
+    let timer: number | undefined;
+
+    const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
     const render = () => {
       hero.classList.toggle("is-playing", !!active);
+      hero.dataset.topic = active ?? "";
       pills.forEach((p) => {
         const on = p.dataset.topic === active;
         p.classList.toggle("is-active", on);
@@ -103,31 +109,27 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
       });
       words.forEach((w) => w.classList.toggle("is-active", w.dataset.word === active));
       images.forEach((i) => i.classList.toggle("is-active", (i.dataset.backdrop || null) === active));
+      if (clock) clock.textContent = active ? `${fmt(elapsed)} / ${fmt(durations[active])}` : "";
     };
-    pills.forEach((p) =>
-      p.addEventListener("click", () => {
-        active = p.dataset.topic === active ? null : p.dataset.topic!;
-        render();
-      }),
-    );
+    const stop = () => {
+      clearInterval(timer);
+      active = null;
+      elapsed = 0;
+      render();
+    };
+    const play = (topic: string) => {
+      clearInterval(timer);
+      active = topic;
+      elapsed = 0;
+      render();
+      timer = window.setInterval(() => {
+        elapsed += 1;
+        if (elapsed >= durations[topic]) stop();
+        else render();
+      }, 1000);
+    };
+    pills.forEach((p) => p.addEventListener("click", () => (p.dataset.topic === active ? stop() : play(p.dataset.topic!))));
     render();
-  }
-}
-
-/* ─── Scroll-spy: highlight the menu entry for the section in view ─── */
-{
-  const links = $$<HTMLAnchorElement>("[data-spy]");
-  const sections = $$<HTMLElement>("[data-spy-section]");
-  if (links.length && sections.length && "IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          links.forEach((l) => l.classList.toggle("is-active", l.dataset.spy === en.target.id));
-        }),
-      { rootMargin: "-40% 0px -50% 0px" },
-    );
-    sections.forEach((s) => io.observe(s));
   }
 }
 
@@ -161,6 +163,32 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
   });
 }
 
+/* ─── Work filter: chips filter cards by category, URL keeps ?f= ─── */
+{
+  const filter = $<HTMLElement>("[data-filter]");
+  if (filter) {
+    const chips = $$<HTMLButtonElement>("[data-f]", filter);
+    const cards = $$<HTMLElement>("[data-category]");
+    const count = $<HTMLElement>("[data-count]");
+    const apply = (f: string) => {
+      chips.forEach((c) => c.classList.toggle("is-active", c.dataset.f === f));
+      let n = 0;
+      cards.forEach((c) => {
+        const show = f === "all" || c.dataset.category === f;
+        c.hidden = !show;
+        if (show) n++;
+      });
+      if (count) count.textContent = String(n).padStart(2, "0");
+      const url = new URL(location.href);
+      f === "all" ? url.searchParams.delete("f") : url.searchParams.set("f", f);
+      history.replaceState(null, "", url);
+    };
+    chips.forEach((c) => c.addEventListener("click", () => apply(c.dataset.f!)));
+    const initial = new URL(location.href).searchParams.get("f");
+    apply(chips.some((c) => c.dataset.f === initial) ? initial! : "all");
+  }
+}
+
 /* ─── Contact form: no backend yet — compose a mail from the fields ─── */
 {
   const form = $<HTMLFormElement>("[data-contact]");
@@ -170,11 +198,24 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
       const d = new FormData(form);
       const to = form.dataset.contact!;
       const kinds = d.getAll("kind").join(", ") || "Not specified";
-      const subject = `New project — ${d.get("name")}`;
+      const subject = `${form.dataset.subject ?? "New project"} — ${d.get("name")}`;
       const body = [`Name: ${d.get("name")}`, `Email: ${d.get("email")}`, `Project: ${kinds}`, "", String(d.get("message") ?? "")].join("\n");
       location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const ok = $<HTMLElement>("[data-sent]", form);
       if (ok) ok.hidden = false;
     });
   }
+}
+
+/* ─── Newsletter: placeholder until an endpoint exists ─── */
+{
+  $$<HTMLFormElement>("[data-subscribe]").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      form.classList.add("is-done");
+      const ok = $<HTMLElement>("[data-sent]", form);
+      if (ok) ok.hidden = false;
+      form.reset();
+    });
+  });
 }

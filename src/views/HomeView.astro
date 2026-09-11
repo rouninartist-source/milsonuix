@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import AboutTeaser from "../components/AboutTeaser.astro";
+import Bleed from "../components/Bleed.astro";
+import Pillars from "../components/Pillars.astro";
+import MediaTiles from "../components/MediaTiles.astro";
+import JournalSection from "../components/JournalSection.astro";
+import Updates from "../components/Updates.astro";
+import { img } from "../data/site";
+import type { Lang } from "../data/i18n";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Base lang={lang} image={img("milson-portrait", 1200, 630)}>
+  <Hero lang={lang} />
+  <AboutTeaser lang={lang} />
+  <Bleed src={img("milson-bleed", 2000, 900)} alt="" />
+  <Pillars lang={lang} />
+  <MediaTiles lang={lang} />
+  <JournalSection lang={lang} />
+  <Updates lang={lang} />
+</Base>

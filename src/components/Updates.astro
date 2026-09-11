@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+import { ui, type Lang } from "../data/i18n";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+<section class="container section--tight updates">
+  <div class="updates__box" data-reveal>
+    <h2 class="statement">{t.updates.title}</h2>
+    <p class="small body">{t.updates.body}</p>
+    <form class="updates__form" data-subscribe novalidate>
+      <label class="sr-only" for="sub-email">Email</label>
+      <input id="sub-email" type="email" name="email" placeholder={t.updates.placeholder} required autocomplete="email" />
+      <button type="submit" class="btn btn--primary"><Icon name="arrow" />{t.updates.cta}</button>
+      <p class="small updates__ok" data-sent hidden>{t.updates.ok}</p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .updates__box { display: grid; gap: 12px; justify-items: center; text-align: center; padding-block: clamp(32px, 6vw, 72px); }
+  .updates__form { position: relative; display: flex; gap: 8px; width: 100%; max-width: 460px; margin-top: 12px; }
+  .updates__form input {
+    flex: 1; min-width: 0; height: 40px; padding-inline: 16px;
+    border: 1px solid var(--line); border-radius: 999px; background: rgb(232 234 250 / 0.04); color: var(--frost);
+    transition: border-color 0.3s;
+  }
+  .updates__form input::placeholder { color: var(--ink-3); }
+  .updates__form input:focus { outline: 0; border-color: var(--blue); }
+  .updates__ok { position: absolute; top: 100%; left: 0; right: 0; margin-top: 10px; color: var(--blue); }
+  @media (max-width: 480px) { .updates__form { flex-direction: column; } }
+</style>

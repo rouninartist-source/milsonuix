@@ -1,16 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
+import { ui } from "../data/i18n";
 ---
 <Base title="404" noFooter>
   <section class="container nf">
     <p class="display nf__code">404</p>
-    <p class="lede">That page isn't here. · Essa página não está aqui.</p>
-    <Button href="/" icon="arrow">Home</Button>
+    <p class="lede">{ui.en.notFound.text} · {ui.pt.notFound.text}</p>
+    <div class="nf__actions">
+      <Button href="/" icon="arrow">{ui.en.notFound.home}</Button>
+      <Button href="/pt" icon="arrow" variant="ghost">{ui.pt.notFound.home}</Button>
+    </div>
   </section>
 </Base>
 
 <style>
   .nf { min-height: 100svh; display: grid; align-content: center; justify-items: start; gap: 20px; padding-top: var(--nav-h); }
   .nf__code { font-size: clamp(120px, 28vw, 360px); line-height: 0.8; color: var(--navy); }
+  .nf__actions { display: flex; flex-wrap: wrap; gap: 8px; }
 </style>

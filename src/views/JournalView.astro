@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import PostCard from "../components/PostCard.astro";
+import Updates from "../components/Updates.astro";
+import { img } from "../data/site";
+import { posts } from "../data/posts";
+import { ui, type Lang } from "../data/i18n";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+<Base lang={lang} title={t.pages.journal} description={t.journal.intro}>
+  <PageHero word={t.pages.journal} image={img("milson-journal-hero", 1800, 900, true)} intro={t.journal.intro} />
+  <section class="container section--tight">
+    <div class="journal__grid">
+      {posts.map((p) => <PostCard post={p} lang={lang} />)}
+    </div>
+  </section>
+  <Updates lang={lang} />
+</Base>
+
+<style>
+  .journal__grid { display: grid; gap: var(--gutter); }
+  @media (min-width: 600px) { .journal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .journal__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

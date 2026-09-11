@@ -1,0 +1,37 @@
+---
+import { img } from "../data/site";
+import { ui, href, type Lang } from "../data/i18n";
+import Button from "./Button.astro";
+import SectionRule from "./SectionRule.astro";
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+<section class="container section about">
+  <SectionRule n="01" label={t.about.label} />
+  <div class="grid about__grid">
+    <div class="about__media duotone fade-edges" data-reveal>
+      <img src={img("milson-about", 900, 1100, true)} alt="Milson, portrait" loading="lazy" />
+    </div>
+    <div class="about__text">
+      <p class="statement--lg" data-reveal>{t.about.statement}</p>
+      <div class="about__aside" data-reveal style="--delay:120ms">
+        <p class="small body">{t.about.aside}</p>
+        <Button href={href(lang, "/about")} icon="enter" size="sm">{t.about.more}</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid { margin-top: clamp(28px, 4vw, 56px); row-gap: 32px; }
+  .about__media { grid-column: 1 / -1; aspect-ratio: 4 / 5; max-width: 320px; border-radius: var(--radius); overflow: hidden; }
+  .about__media img { width: 100%; height: 100%; object-fit: cover; }
+  .about__text { grid-column: 1 / -1; display: grid; gap: 28px; }
+  .about__aside { display: grid; gap: 18px; max-width: 34ch; justify-items: start; }
+  @media (min-width: 900px) {
+    .about__media { grid-column: 1 / span 3; max-width: none; }
+    .about__text { grid-column: 5 / -1; grid-template-columns: 7fr 4fr; gap: var(--gutter); align-items: start; }
+    .about__aside { padding-top: 0.6em; }
+  }
+</style>

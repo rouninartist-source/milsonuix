@@ -1,62 +1,53 @@
 ---
-import { site, img, type Lang } from "../data/site";
-import { content, langHome } from "../data/content";
+import { site, pillars, img } from "../data/site";
+import { ui, pick, type Lang } from "../data/i18n";
 import Icon from "./Icon.astro";
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const t = content[lang];
-const home = langHome(lang);
-const portrait = img("mushin-portrait", 1600, 2000, true);
+const t = ui[lang];
+const portrait = img("milson-portrait", 1600, 2000, true);
 ---
 <section class="hero" data-hero>
   <div class="hero__media" aria-hidden="true">
     <img src={portrait} alt="" class="is-active" data-backdrop="" fetchpriority="high" />
-    {t.hero.topics.map((p) => <img src={img("mushin-" + p.id, 1600, 2000, true)} alt="" data-backdrop={p.id} loading="lazy" />)}
+    {pillars.map((p) => <img src={img(p.seed, 1600, 2000, true)} alt="" data-backdrop={p.id} loading="lazy" />)}
     <div class="hero__scrim"></div>
   </div>
 
   <div class="container hero__content">
-    <div class="hero__tag" data-reveal>
-      <p class="lede">{t.hero.statement}</p>
-      <p class="small muted hero__role">{t.hero.role}</p>
-    </div>
+    <p class="hero__tag lede" data-reveal>{pick(site.tagline, lang)}</p>
 
     <div class="hero__bottom">
       <div class="hero__views" data-reveal style="--delay:120ms">
-        <span class="small muted">{t.hero.explore}</span>
-        <div class="hero__pills" role="group">
-          {t.hero.topics.map((p) => (
+        <span class="small muted">{t.hero.watch}</span>
+        <div class="hero__pills" role="group" aria-label={t.hero.topics}>
+          {pillars.map((p) => (
             <button type="button" class="pill" data-topic={p.id} aria-pressed="false">
               <Icon name="play" class="pill__play" />
               <Icon name="pause" class="pill__pause" />
-              {p.label}
+              {pick(p.short, lang)}
             </button>
           ))}
         </div>
       </div>
 
       <div class="hero__giant" aria-hidden="true">
-        <p class="hero__name display">{site.short}</p>
+        <p class="hero__name display">{site.brand}</p>
         <div class="hero__strip display">
           <div class="hero__track">
-            {[0, 1].map(() => t.hero.topics.map((p) => <span data-word={p.id}>{p.word}</span>))}
+            {[0, 1].map(() => pillars.map((p) => <span data-word={p.id}>{pick(p.short, lang).replace("/", "·")}</span>))}
           </div>
         </div>
       </div>
 
       <div class="hero__meta small">
-        <ul class="hero__disciplines">
-          {t.hero.disciplines.map((d) => <li>{d}</li>)}
-        </ul>
-        <div class="hero__ctas">
-          <a href={`${home}#services`} class="btn btn--sm"><Icon name="enter" />{t.hero.cta}</a>
-          <a href={`${home}#work`} class="btn btn--sm btn--ghost"><Icon name="arrow" />{t.hero.cta2}</a>
-        </div>
+        <span class="hero__clock" data-clock></span>
+        <span class="hero__mute"><Icon name="mute" size={14} /></span>
       </div>
     </div>
   </div>
 
-  <h1 class="sr-only">{site.brand} — {t.hero.role}</h1>
+  <h1 class="sr-only">{site.brand} — {pick(site.role, lang)}</h1>
 </section>
 
 <style>
@@ -64,9 +55,8 @@ const portrait = img("mushin-portrait", 1600, 2000, true);
   .hero__media { position: absolute; inset: 0; }
   .hero__media img {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%;
-    opacity: 0; transform: scale(1.04); transition: opacity 1.2s var(--ease), transform 6s var(--ease);
-    /* keep any photo in the reference's low-key mood */
-    filter: brightness(0.6) contrast(1.08);
+    opacity: 0; transform: scale(1.04);
+    transition: opacity 1.2s var(--ease), transform 6s var(--ease);
   }
   .hero__media img.is-active { opacity: 1; transform: none; }
   .hero__scrim {
@@ -76,8 +66,7 @@ const portrait = img("mushin-portrait", 1600, 2000, true);
       radial-gradient(90% 70% at 50% 40%, transparent 40%, rgb(6 9 16 / 0.55) 100%);
   }
   .hero__content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding-top: calc(var(--nav-h) + 24px); }
-  .hero__tag { display: grid; gap: 10px; max-width: 22ch; color: var(--frost); }
-  .hero__role { max-width: none; }
+  .hero__tag { max-width: 15ch; color: var(--frost); }
   @media (min-width: 900px) {
     .hero__tag { margin-left: auto; margin-top: 6vh; width: calc((100% - 11 * var(--gutter)) / 12 * 4 + 3 * var(--gutter)); max-width: none; }
   }
@@ -87,7 +76,8 @@ const portrait = img("mushin-portrait", 1600, 2000, true);
   .hero__pills { display: flex; flex-wrap: wrap; gap: 6px; }
   .pill {
     display: inline-flex; align-items: center; gap: 7px; height: 34px; padding-inline: 12px 14px;
-    border: 1px solid rgb(232 234 250 / 0.28); border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--ink);
+    border: 1px solid rgb(232 234 250 / 0.28); border-radius: 999px;
+    font-size: 12px; font-weight: 500; color: var(--ink);
     background: rgb(6 9 16 / 0.35); backdrop-filter: blur(8px);
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease);
   }
@@ -95,22 +85,21 @@ const portrait = img("mushin-portrait", 1600, 2000, true);
   .pill:hover { border-color: var(--frost); }
   .pill.is-active { background: var(--frost); color: var(--obsidian); border-color: var(--frost); }
 
-  /* Giant text: the name at rest, the discipline strip while a pill is active. */
-  .hero__giant { position: relative; height: clamp(96px, 22vw, 300px); overflow: hidden; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); }
-  .hero__name, .hero__strip { position: absolute; inset: 0 auto auto var(--margin); font-size: clamp(96px, 22vw, 300px); white-space: nowrap; transition: opacity 0.6s var(--ease), transform 0.8s var(--ease); }
-  .hero__name { color: var(--frost); }
-  .hero__strip { width: 100%; left: 0; padding-inline: var(--margin); opacity: 0; transform: translateY(12%); }
+  /* Giant text: the name at rest, the topic strip while a pill plays. */
+  .hero__giant { position: relative; height: clamp(76px, 15.5vw, 236px); overflow: hidden; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); }
+  .hero__name,
+  .hero__strip { position: absolute; inset: 0 auto auto var(--margin); transition: opacity 0.6s var(--ease), transform 0.8s var(--ease); }
+  .hero__name { font-size: clamp(76px, 15.5vw, 236px); white-space: nowrap; color: var(--frost); }
+  .hero__strip { width: 100%; left: 0; padding-inline: var(--margin); font-size: clamp(76px, 15.5vw, 236px); opacity: 0; transform: translateY(12%); white-space: nowrap; }
   .hero__track { display: inline-flex; gap: 0.35em; will-change: transform; }
   .hero__track span { color: rgb(232 234 250 / 0.22); transition: color 0.5s var(--ease); }
   .hero__track span.is-active { color: var(--blue); }
   .hero.is-playing .hero__name { opacity: 0; transform: translateY(-12%); }
   .hero.is-playing .hero__strip { opacity: 1; transform: none; }
-  .hero.is-playing .hero__track { animation: marquee 32s linear infinite; }
+  .hero.is-playing .hero__track { animation: marquee 28s linear infinite; }
   @keyframes marquee { to { transform: translateX(-50%); } }
 
-  .hero__meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-  .hero__disciplines { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--ink-3); font-size: 11px; letter-spacing: 0.04em; }
-  .hero__disciplines li + li::before { content: "·"; margin-right: 14px; }
-  .hero__ctas { display: flex; gap: 6px; }
-  @media (max-width: 599px) { .hero__disciplines { display: none; } }
+  .hero__meta { display: flex; justify-content: space-between; align-items: center; min-height: 20px; margin-top: 10px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .hero__mute { opacity: 0; transition: opacity 0.4s; }
+  .hero.is-playing .hero__mute { opacity: 0.8; }
 </style>

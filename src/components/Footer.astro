@@ -1,11 +1,11 @@
 ---
-import { site, type Lang } from "../data/site";
-import { content, langHome } from "../data/content";
+import { site, pillars } from "../data/site";
+import { ui, href, pick, type Lang } from "../data/i18n";
 import Icon from "./Icon.astro";
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const t = content[lang];
-const home = langHome(lang);
+const t = ui[lang];
+const year = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="container">
@@ -13,21 +13,21 @@ const home = langHome(lang);
       <div class="footer__col">
         <p class="eyebrow">{site.brand}</p>
         <ul>
-          {t.nav.map((n) => <li><a href={`${home}${n.href}`}>{n.label}</a></li>)}
+          {t.nav.filter((n) => n.href !== "/").map((n) => <li><a href={href(lang, n.href)}>{n.label}</a></li>)}
         </ul>
       </div>
       <div class="footer__col">
-        <p class="eyebrow">{t.services.label}</p>
+        <p class="eyebrow">{t.footer.practice}</p>
         <ul>
-          {t.services.items.map((s, i) => <li><a href={`${home}#services`} class:list={{ blue: i === 0 }}>{s.title}</a></li>)}
+          {pillars.map((p, i) => <li><a href={`${href(lang, "/work")}?f=${p.id}`} class:list={{ blue: i === 0 }}>{pick(p.label, lang)}</a></li>)}
         </ul>
       </div>
       <div class="footer__col">
-        <p class="eyebrow">{t.contact.label}</p>
+        <p class="eyebrow">{t.footer.contact}</p>
         <ul>
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          <li><a href={site.resume} download>{t.menu.resume}</a></li>
-          <li><span class="muted">{t.footer.location}</span></li>
+          <li><a href={href(lang, "/contact")}>{t.footer.start}</a></li>
+          <li><span class="muted">{pick(site.location, lang)}</span></li>
         </ul>
       </div>
       <ul class="footer__socials">
@@ -40,9 +40,8 @@ const home = langHome(lang);
     <p class="footer__giant display" aria-hidden="true">{site.brand}</p>
 
     <div class="footer__bar small">
-      <span class="muted">{t.footer.rights.replace("{year}", site.year)}</span>
-      <span class="footer__crafted">{t.footer.crafted}</span>
-      <span class="muted">{t.footer.location}</span>
+      <span class="muted">{t.footer.built} {site.brand}</span>
+      <span class="muted">© {site.brand} {year}. {t.footer.rights}</span>
     </div>
   </div>
 </footer>
@@ -66,14 +65,17 @@ const home = langHome(lang);
     .footer__col { grid-column: span 3; }
     .footer__socials { grid-column: 1 / -1; justify-content: flex-start; }
   }
+
   .footer__giant {
     margin-top: clamp(48px, 8vw, 120px);
-    font-size: min(calc((100vw - 2 * var(--margin)) / 8.2), 262px);
-    line-height: 0.78; color: rgb(26 44 70 / 0.55); white-space: nowrap;
+    font-size: clamp(88px, 17.5vw, 262px);
+    line-height: 0.78;
+    color: rgb(26 44 70 / 0.55);
+    white-space: nowrap;
     -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
     mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
-    margin-bottom: -0.12em; user-select: none;
+    margin-bottom: -0.12em;
+    user-select: none;
   }
   .footer__bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 20px 24px; border-top: 1px solid var(--line); }
-  .footer__crafted { color: var(--ink-2); font-style: italic; }
 </style>

@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import Button from "../components/Button.astro";
+import Updates from "../components/Updates.astro";
+import type { Post } from "../data/posts";
+import { ui, href, pick, formatDate, type Lang } from "../data/i18n";
+interface Props { lang: Lang; post: Post }
+const { lang, post } = Astro.props;
+const t = ui[lang];
+---
+<Base lang={lang} title={pick(post.title, lang)} description={pick(post.excerpt, lang)} image={post.cover}>
+  <article class="container post">
+    <div class="post__chips" data-reveal>
+      <span class="chip chip--dot">{pick(post.tag, lang)}</span>
+      <span class="chip"><Icon name="calendar" />{formatDate(post.date, lang)}</span>
+    </div>
+    <h1 class="statement--lg post__title" data-reveal>{pick(post.title, lang)}</h1>
+    <figure class="post__cover media media--wide" data-reveal style="--delay:120ms">
+      <img src={post.cover} alt="" />
+    </figure>
+    <div class="post__body" data-reveal>
+      <p class="lede">{pick(post.excerpt, lang)}</p>
+      {pick(post.body, lang).map((p) => <p class="body">{p}</p>)}
+    </div>
+    <div class="post__foot">
+      <Button href={href(lang, "/journal")} icon="enter" variant="ghost">{t.journal.back}</Button>
+    </div>
+  </article>
+  <Updates lang={lang} />
+</Base>
+
+<style>
+  .post { padding-top: calc(var(--nav-h) + clamp(32px, 8vh, 96px)); display: grid; gap: 24px; max-width: 880px; }
+  .post__chips { display: flex; gap: 6px; }
+  .post__title { max-width: 20ch; }
+  .post__cover { margin: 12px 0 0; }
+  .post__body { display: grid; gap: 20px; max-width: 62ch; font-size: 16px; }
+  .post__foot { padding-top: 12px; }
+</style>

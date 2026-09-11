@@ -1,0 +1,60 @@
+---
+/** "Everything, in one place" — three dotted-icon tiles like the reference's Podcasts / Press / All media. */
+import SectionRule from "./SectionRule.astro";
+const tiles = [
+  { label: "Case studies", href: "/work", icon: "grid", active: true },
+  { label: "Process", href: "/journal?t=Process", icon: "ring" },
+  { label: "Journal", href: "/journal", icon: "dots" },
+];
+---
+<section class="container section tiles">
+  <SectionRule n="03" label="Explore" />
+  <div class="grid tiles__grid">
+    <p class="statement tiles__lead" data-reveal>Case studies, process notes and the occasional strong opinion — all in one place.</p>
+    <ul class="tiles__list" data-reveal style="--delay:100ms">
+      {tiles.map((t) => (
+        <li>
+          <a href={t.href} class:list={["tile", { "is-active": t.active }]}>
+            <span class={`tile__icon tile__icon--${t.icon}`} aria-hidden="true"></span>
+            <span class="tile__label">{t.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .tiles__grid { margin-top: clamp(28px, 4vw, 56px); row-gap: 40px; }
+  .tiles__lead { grid-column: 1 / -1; max-width: 22ch; }
+  .tiles__list { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .tile {
+    display: grid; gap: 22px; align-content: end; aspect-ratio: 1 / 1.15; padding: 18px;
+    border-radius: var(--radius); border: 1px solid var(--line);
+    background: linear-gradient(to bottom, rgb(26 44 70 / 0.18), rgb(6 9 16 / 0.6));
+    color: var(--ink-3); transition: color 0.3s, border-color 0.3s, background 0.3s;
+  }
+  .tile:hover, .tile.is-active { color: var(--frost); border-color: rgb(232 234 250 / 0.3); }
+  .tile.is-active { background: linear-gradient(to bottom, rgb(0 112 255 / 0.18), rgb(6 9 16 / 0.6)); }
+  .tile.is-active .tile__label { color: var(--blue); }
+  .tile__label { font-size: 13px; }
+  .tile__icon { width: 56px; height: 56px; opacity: 0.9; }
+  .tile__icon--grid { background: radial-gradient(circle, currentColor 1.3px, transparent 1.5px) 0 0 / 9px 9px; }
+  .tile__icon--dots { background: radial-gradient(circle, currentColor 1.6px, transparent 1.8px) 0 0 / 14px 14px; }
+  .tile__icon--ring {
+    border-radius: 50%;
+    background: radial-gradient(circle, currentColor 1.4px, transparent 1.6px) 0 0 / 8px 8px;
+    -webkit-mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 64%);
+    mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 64%);
+  }
+  @media (min-width: 900px) {
+    .tiles__lead { grid-column: 1 / span 5; }
+    .tiles__list { grid-column: 7 / -1; }
+  }
+  @media (max-width: 599px) {
+    .tiles__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .tile { padding: 12px; gap: 14px; }
+    .tile__icon { width: 40px; height: 40px; }
+    .tile__label { font-size: 11.5px; }
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import AboutTeaser from "../components/AboutTeaser.astro";
+import Bleed from "../components/Bleed.astro";
+import Pillars from "../components/Pillars.astro";
+import MediaTiles from "../components/MediaTiles.astro";
+import JournalSection from "../components/JournalSection.astro";
+import Updates from "../components/Updates.astro";
+import { img } from "../data/site";
+---
+<Base image={img("milson-portrait", 1200, 630)}>
+  <Hero />
+  <AboutTeaser />
+  <Bleed src={img("milson-bleed", 2000, 900)} alt="Studio work in progress" />
+  <Pillars />
+  <MediaTiles />
+  <JournalSection />
+  <Updates />
+</Base>

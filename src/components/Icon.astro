@@ -1,0 +1,29 @@
+---
+/** Tiny inline icon set — no icon library, just the paths the design needs. */
+interface Props { name: keyof typeof icons; class?: string; size?: number }
+const { name, class: cls, size = 12 } = Astro.props;
+
+const icons = {
+  play: '<path d="M4 2.5v7l6-3.5-6-3.5z" fill="currentColor"/>',
+  pause: '<path d="M3 2.5h2v7H3zM7 2.5h2v7H7z" fill="currentColor"/>',
+  plus: '<path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+  enter: '<path d="M2.5 2v4.5a1.5 1.5 0 0 0 1.5 1.5h5M7 5.5 9.5 8 7 10.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>',
+  arrow: '<path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>',
+  mute: '<path d="M2 4.5h2l3-2.5v8l-3-2.5H2zM9 4l2 4M11 4l-2 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  calendar: '<rect x="1.5" y="2.5" width="9" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M1.5 5h9M4 1.5v2M8 1.5v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>',
+  close: '<path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+  li: '<path d="M2 4.5h1.8V10H2zM2.9 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM5 4.5h1.7v.8c.3-.5.9-.9 1.8-.9C10 4.4 10 5.6 10 6.8V10H8.3V7.2c0-.7-.1-1.3-.8-1.3s-.8.6-.8 1.3V10H5z" fill="currentColor"/>',
+  ig: '<rect x="1.5" y="1.5" width="9" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="2.1" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="8.6" cy="3.4" r=".6" fill="currentColor"/>',
+  be: '<path d="M1.5 2.5h3c1.3 0 2 .6 2 1.6 0 .7-.4 1.1-.9 1.3.7.2 1.2.8 1.2 1.6 0 1.2-.9 2-2.3 2H1.5zM3 5h1.3c.5 0 .8-.3.8-.7s-.3-.7-.8-.7H3zm0 2.9h1.5c.6 0 .9-.3.9-.8s-.3-.8-.9-.8H3zM7.5 6.9c0-1.4.9-2.4 2.2-2.4s2.1 1 2.1 2.5v.3H8.9c.1.6.4.9.9.9.4 0 .6-.2.7-.5h1.3c-.2.9-.9 1.5-2 1.5-1.4 0-2.3-1-2.3-2.3zm1.4-.5h1.6c-.1-.5-.4-.8-.8-.8s-.7.3-.8.8zM8.6 3h2.3v.7H8.6z" fill="currentColor"/>',
+  x: '<path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>',
+};
+---
+<svg
+  class={cls}
+  width={size}
+  height={size}
+  viewBox="0 0 12 12"
+  aria-hidden="true"
+  focusable="false"
+  set:html={icons[name]}
+/>

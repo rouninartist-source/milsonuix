@@ -1,0 +1,10 @@
+---
+/** "01.  ──── LABEL ────  ▬" divider used at the top of every section. */
+interface Props { n: string; label: string; class?: string }
+const { n, label, class: cls } = Astro.props;
+---
+<div class:list={["rule", cls]}>
+  <span>{n}.</span>
+  <span>{label}</span>
+  <span class="rule__end" aria-hidden="true"></span>
+</div>

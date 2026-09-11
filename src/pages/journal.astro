@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import PostCard from "../components/PostCard.astro";
+import Updates from "../components/Updates.astro";
+import { img } from "../data/site";
+import { posts } from "../data/posts";
+---
+<Base title="Journal" description="Notes on design, process and craft from Milson UIX.">
+  <PageHero word="Journal" image={img("milson-journal-hero", 1800, 900, true)} intro="Notes on design, process and the occasional strong opinion." />
+  <section class="container section--tight">
+    <div class="journal__grid">
+      {posts.map((p) => <PostCard post={p} />)}
+    </div>
+  </section>
+  <Updates />
+</Base>
+
+<style>
+  .journal__grid { display: grid; gap: var(--gutter); }
+  @media (min-width: 600px) { .journal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .journal__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

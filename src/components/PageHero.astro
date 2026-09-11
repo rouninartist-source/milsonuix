@@ -1,0 +1,25 @@
+---
+/**
+ * Inner-page opener: a giant word filled with a photograph (background-clip: text),
+ * with an intro line beneath — the ABOUT / MY STORY treatment from the reference.
+ */
+interface Props { word: string; image: string; intro?: string; eyebrow?: string }
+const { word, image, intro, eyebrow } = Astro.props;
+---
+<section class="container phero">
+  {eyebrow && <p class="eyebrow phero__eyebrow" data-reveal>{eyebrow}</p>}
+  <h1 class="phero__word display" style={`--chars:${word.length}`} data-reveal>
+    <span class="masked" style={`background-image:url(${image})`}>{word}</span>
+  </h1>
+  {intro && <p class="phero__intro lede" data-reveal style="--delay:120ms">{intro}</p>}
+  <slot />
+</section>
+
+<style>
+  .phero { padding-top: calc(var(--nav-h) + clamp(40px, 10vh, 120px)); padding-bottom: clamp(24px, 4vw, 48px); }
+  .phero__eyebrow { margin-bottom: 20px; }
+  /* Anton averages ~0.56em per glyph: size the word to fill the container, capped for short words. */
+  .phero__word { overflow: hidden; margin-inline: -0.03em; font-size: min(calc((100vw - 2 * var(--margin)) / (var(--chars) * 0.56)), 440px); }
+  .phero__word .masked { padding-inline: 0.03em; }
+  .phero__intro { margin-top: clamp(20px, 3vw, 36px); max-width: 30ch; color: var(--frost); }
+</style>

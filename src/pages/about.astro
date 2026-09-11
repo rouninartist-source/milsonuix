@@ -1,0 +1,112 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Bleed from "../components/Bleed.astro";
+import Cta from "../components/Cta.astro";
+import Button from "../components/Button.astro";
+import SectionRule from "../components/SectionRule.astro";
+import { img, site } from "../data/site";
+import { story } from "../data/story";
+---
+<Base title="About" description={`${site.name} is a multidisciplinary graphic designer in Maputo, building brands, products and motion under Milson UIX.`}>
+  <PageHero
+    word="About"
+    image={img("milson-about-hero", 1800, 900, true)}
+    intro="Milson is a multidisciplinary graphic designer, focused on UI/UX — building brands, products and motion for companies that want to be remembered."
+  />
+
+  <section class="container section story" data-tabs data-active="2014">
+    <SectionRule n="01" label="My story" />
+    <div class="story__stage">
+      <p class="story__giant display" aria-hidden="true">My<br />Story</p>
+      {story.map((s) => (
+        <article class="story__panel grid" data-panel={s.year} hidden>
+          <div class="story__media media media--portrait">
+            <img src={s.image} alt="" loading="lazy" />
+          </div>
+          <div class="story__text">
+            <p class="story__year small"><span class="story__dot"></span>{s.year}</p>
+            <h2 class="lede">{s.title}</h2>
+            <p class="small body">{s.text}</p>
+          </div>
+        </article>
+      ))}
+      <div class="story__cta"><Button href="/work" icon="plus" size="sm">See the work</Button></div>
+    </div>
+
+    <div class="story__timeline" role="tablist" aria-label="Years">
+      <span class="story__bar" data-progress aria-hidden="true"></span>
+      {story.map((s) => (
+        <button type="button" role="tab" class="story__tab" data-tab={s.year} aria-selected="false">{s.year}</button>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section--tight">
+    <p class="statement--lg fade-words about__manifesto">
+      Today the studio does three things and refuses to do them separately: the identity, the product and the film are designed by the same hands, so the brand you see on the street is the one you tap on the phone. Nothing is thrown over a wall — we ship the front-end for the products we design, in Maputo, for clients across Mozambique and beyond.
+    </p>
+  </section>
+
+  <Bleed src={img("milson-team", 2000, 1100)} alt="At the studio" ratio="16 / 8" />
+
+  <section class="container section facts">
+    <SectionRule n="02" label="In short" />
+    <dl class="grid facts__grid">
+      {[
+        ["Based in", site.location],
+        ["Since", "2014 · studio 2022"],
+        ["Practice", "Brand · Product · Motion"],
+        ["Tools", "Figma, After Effects, code"],
+      ].map(([k, v]) => (
+        <div class="facts__item" data-reveal>
+          <dt class="eyebrow">{k}</dt>
+          <dd class="lede">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .story__stage { position: relative; margin-top: clamp(28px, 4vw, 56px); padding-block: clamp(24px, 4vw, 48px); }
+  .story__giant {
+    position: absolute; left: 0; top: 0; z-index: 0;
+    font-size: clamp(88px, 14vw, 200px); line-height: 0.84;
+    color: rgb(26 44 70 / 0.5); user-select: none; pointer-events: none;
+  }
+  .story__panel { position: relative; z-index: 1; row-gap: 24px; }
+  .story__media { grid-column: 2 / -1; max-width: 360px; }
+  .story__text { grid-column: 1 / -1; display: grid; gap: 12px; align-content: center; max-width: 34ch; }
+  .story__year { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
+  .story__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--frost); }
+  .story__cta { position: relative; z-index: 1; margin-top: 28px; display: flex; justify-content: center; }
+  @media (min-width: 900px) {
+    .story__stage { padding-block: clamp(48px, 6vw, 96px); }
+    .story__media { grid-column: 4 / span 4; max-width: none; }
+    .story__text { grid-column: 9 / span 4; padding-top: 12%; }
+  }
+
+  .story__timeline { position: relative; display: flex; justify-content: space-between; margin-top: 28px; padding-top: 14px; }
+  .story__timeline::before { content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: var(--line); }
+  .story__bar { position: absolute; left: 0; bottom: 3px; height: 1px; width: calc(var(--p, 0) * 100%); background: var(--blue); transition: width 0.6s var(--ease); }
+  .story__tab { position: relative; padding-bottom: 14px; font-size: 12px; color: var(--ink-3); transition: color 0.3s; }
+  .story__tab::after {
+    content: ""; position: absolute; left: 50%; bottom: 0; width: 7px; height: 7px; margin-left: -3.5px;
+    border-radius: 50%; background: var(--ink-4); transition: background 0.3s;
+  }
+  .story__tab:first-child::after { margin-left: 0; left: 0; }
+  .story__tab:last-child::after { left: auto; right: 0; margin-left: 0; }
+  .story__tab.is-reached { color: var(--blue); }
+  .story__tab.is-reached::after { background: var(--blue); }
+  .story__tab.is-active { color: var(--frost); }
+  .story__tab:hover { color: var(--frost); }
+
+  .about__manifesto { max-width: 34ch; margin-inline: auto; text-align: center; padding-block: clamp(24px, 6vw, 80px); }
+  .facts__grid { margin-top: clamp(28px, 4vw, 56px); row-gap: 28px; }
+  .facts__item { grid-column: span 3; display: grid; gap: 8px; }
+  .facts__item dd { margin: 0; }
+  @media (max-width: 899px) { .facts__item { grid-column: span 3; } }
+</style>

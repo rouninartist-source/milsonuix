@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://milsonuix.com/sitemap.xml

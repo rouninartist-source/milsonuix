@@ -1,0 +1,24 @@
+---
+import { site } from "../data/site";
+import Button from "./Button.astro";
+---
+<section class="container section cta">
+  <div class="grid">
+    <p class="cta__lead statement--lg" data-reveal>Have a brand, a product or a film that deserves better? Let's talk.</p>
+    <div class="cta__actions" data-reveal style="--delay:120ms">
+      <Button href="/contact" icon="arrow" variant="primary">Start a project</Button>
+      <a href={`mailto:${site.email}`} class="cta__mail small">{site.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__lead { grid-column: 1 / -1; max-width: 18ch; }
+  .cta__actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 28px; }
+  .cta__mail { color: var(--ink-3); transition: color 0.3s; }
+  .cta__mail:hover { color: var(--frost); }
+  @media (min-width: 900px) {
+    .cta__lead { grid-column: 1 / span 8; }
+    .cta__actions { grid-column: 1 / -1; }
+  }
+</style>

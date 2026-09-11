@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Cta from "../components/Cta.astro";
+import { img, pillars } from "../data/site";
+import { projects } from "../data/projects";
+---
+<Base title="Work" description="Selected brand, product and motion work by Milson UIX.">
+  <PageHero word="Work" image={img("milson-work-hero", 1800, 900)} intro="Selected projects across brand, product and motion. Fewer, deeper — every one shipped.">
+    <div class="work__filter" data-filter>
+      <button type="button" class="chip work__chip is-active" data-f="all">All</button>
+      {pillars.map((p) => <button type="button" class="chip work__chip" data-f={p.id}>{p.label}</button>)}
+      <span class="small muted work__count"><span data-count>{String(projects.length).padStart(2, "0")}</span> projects</span>
+    </div>
+  </PageHero>
+
+  <section class="container section--tight">
+    <div class="work__grid">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .work__filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: clamp(24px, 3vw, 40px); }
+  .work__chip { height: 32px; padding-inline: 14px; font-size: 12px; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+  .work__chip:hover { border-color: var(--frost); color: var(--frost); }
+  .work__chip.is-active { background: var(--frost); color: var(--obsidian); border-color: var(--frost); }
+  .work__count { margin-left: auto; font-variant-numeric: tabular-nums; }
+  .work__grid { display: grid; gap: var(--gutter); }
+  @media (min-width: 700px) { .work__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

@@ -1,0 +1,21 @@
+---
+/** Pill button. Renders <a> when href is given, <button> otherwise. */
+import Icon from "./Icon.astro";
+interface Props {
+  href?: string;
+  icon?: "plus" | "enter" | "arrow" | "play";
+  variant?: "default" | "primary" | "ghost";
+  size?: "default" | "sm";
+  class?: string;
+  [key: string]: unknown;
+}
+const { href, icon = "enter", variant = "default", size = "default", class: cls, ...rest } = Astro.props;
+const classes = ["btn", variant !== "default" && `btn--${variant}`, size === "sm" && "btn--sm", cls]
+  .filter(Boolean)
+  .join(" ");
+---
+{href ? (
+  <a href={href} class={classes} {...rest}><Icon name={icon} /><slot /></a>
+) : (
+  <button type="button" class={classes} {...rest}><Icon name={icon} /><slot /></button>
+)}

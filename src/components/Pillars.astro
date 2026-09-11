@@ -1,0 +1,79 @@
+---
+import { pillars, img } from "../data/site";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+---
+<section class="pillars">
+  <div class="container section" data-tabs data-active="brand">
+    <div class="grid pillars__grid">
+      <div class="pillars__tabs" role="tablist" aria-label="Practice areas">
+        {pillars.map((p, i) => (
+          <button type="button" role="tab" class="pillars__tab" data-tab={p.id} aria-selected="false">
+            <span class="pillars__n">{String(i + 1).padStart(2, "0")}</span>
+            <span>{p.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="pillars__body">
+        {pillars.map((p) => (
+          <div class="pillars__panel" data-panel={p.id} role="tabpanel" hidden>
+            <p class="statement">{p.statement}</p>
+            <div class="pillars__lower">
+              <a href={`/work?f=${p.id}`} class="pillars__thumb media media--landscape media--scrim">
+                <img src={img(p.seed + "-thumb", 800, 500)} alt="" loading="lazy" />
+                <span class="btn btn--sm"><Icon name="play" />See the work</span>
+              </a>
+              <p class="small body">{p.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <Button href="/work" icon="arrow" class="pillars__all" variant="ghost">All projects</Button>
+  </div>
+</section>
+
+<style>
+  .pillars { background: linear-gradient(to bottom, var(--bg), var(--bg-2) 50%, var(--bg)); }
+  .pillars__grid { row-gap: 28px; }
+  .pillars__tabs { grid-column: 1 / -1; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  .pillars__tabs::-webkit-scrollbar { display: none; }
+  .pillars__tab {
+    display: inline-flex; align-items: center; gap: 10px; flex: none;
+    padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line);
+    font-size: 12px; color: var(--ink-3); transition: color 0.3s, border-color 0.3s;
+  }
+  .pillars__n { font-size: 10px; letter-spacing: 0.1em; }
+  .pillars__tab:hover { color: var(--frost); }
+  .pillars__tab.is-active { color: var(--frost); border-color: var(--frost); }
+  .pillars__body { grid-column: 1 / -1; }
+  .pillars__panel { display: grid; gap: 28px; }
+  .pillars__lower { display: grid; gap: 20px; }
+  .pillars__thumb { position: relative; max-width: 300px; }
+  .pillars__thumb .btn { position: absolute; left: 12px; bottom: 12px; z-index: 1; }
+  .pillars__lower p { max-width: 36ch; }
+  .pillars__all { margin-top: 28px; }
+
+  @media (min-width: 900px) {
+    /* Vertical rails on both edges — 01 on the left, 02 / 03 on the right — like the reference. */
+    .pillars__grid { grid-template-rows: auto; align-items: start; }
+    .pillars__tabs { grid-column: 1 / -1; display: contents; }
+    .pillars__tab {
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      padding: 0; border: 0; border-radius: 0; gap: 12px; align-self: start;
+      height: 100%;
+    }
+    .pillars__tab[data-tab="brand"] { grid-column: 1; grid-row: 1; justify-self: start; }
+    .pillars__tab[data-tab="product"] { grid-column: 11; grid-row: 1; justify-self: end; }
+    .pillars__tab[data-tab="motion"] { grid-column: 12; grid-row: 1; justify-self: end; }
+    .pillars__tab.is-active { border: 0; }
+    .pillars__tab.is-active .pillars__n { color: var(--blue); }
+    .pillars__body { grid-column: 2 / 11; grid-row: 1; padding-inline: var(--gutter); }
+    .pillars__panel { grid-template-columns: repeat(9, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 56px; }
+    .pillars__panel .statement { grid-column: 1 / span 6; }
+    .pillars__lower { grid-column: 1 / -1; grid-template-columns: repeat(9, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
+    .pillars__thumb { grid-column: 1 / span 3; max-width: none; }
+    .pillars__lower p { grid-column: 5 / span 4; }
+  }
+</style>

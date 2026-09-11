@@ -2,42 +2,43 @@
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
-import { site } from "../data/site";
+import { site, langs, type Lang } from "../data/site";
+import { content, langHome } from "../data/content";
 
-interface Props { title?: string; description?: string; image?: string; noFooter?: boolean }
-const { title, description = site.description, image, noFooter = false } = Astro.props;
-const fullTitle = title ? `${title} · ${site.brand}` : `${site.brand} — ${site.role}`;
+interface Props { lang?: Lang; title?: string; description?: string; image?: string; noFooter?: boolean }
+const { lang = "en", title, description, image, noFooter = false } = Astro.props;
+const t = content[lang];
+const fullTitle = title ? `${title} · ${site.brand}` : t.meta.title;
+const desc = description ?? t.meta.description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang === "pt" ? "pt-MZ" : "en"}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
+    {langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(langHome(l), Astro.site)} />)}
     <meta name="theme-color" content="#060910" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonical} />
     {image && <meta property="og:image" content={image} />}
     <meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <Nav />
+    <Nav lang={lang} />
     <main id="main">
       <slot />
     </main>
-    {!noFooter && <Footer />}
+    {!noFooter && <Footer lang={lang} />}
     <script>
       import "../scripts/site";
     </script>

@@ -1,8 +1,9 @@
-# milsonuix.com
+# Mushin Designer — milsonuix.com
 
-Personal brand and studio site for **Milson** — multidisciplinary graphic designer, focused on UI/UX.
+Personal brand site for **Mushin Designer** — Creative Director & Digital Product Designer, Maputo.
+One page, two languages (`/` EN, `/pt` PT), plus a 404.
 
-Static site built with [Astro](https://astro.build) (the only dependency). Hand-written CSS and a single vanilla script; no UI library, no runtime, no database.
+Static site built with [Astro](https://astro.build) (the only dependency). Hand-written CSS and one vanilla script; no UI library, no runtime, no database.
 
 ```bash
 nvm use            # Node 24 (.nvmrc)
@@ -15,18 +16,18 @@ npm run build      # → dist/
 
 | What | Where |
 | --- | --- |
-| Copy, links, socials, practice areas | `src/data/site.ts` |
-| Projects / case studies | `src/data/projects.ts` |
-| Journal posts | `src/data/posts.ts` |
-| About timeline | `src/data/story.ts` |
+| **All copy, EN + PT** (sections, menu, form labels) | `src/data/content.ts` |
+| Brand constants: email, socials, file paths, experience, skills, trusted-by list | `src/data/site.ts` |
 | Design tokens (palette, grid, type) | `src/styles/global.css` |
-| Client behaviour (menu, reveal, hero, tabs, filter, forms) | `src/scripts/site.ts` |
-| Pages | `src/pages/*.astro` (`work/[slug]`, `journal/[slug]` are generated from data) |
+| Page sections | `src/components/Home.astro` (hero in `Hero.astro`) |
+| Client behaviour (menu, reveal, hero strip, process tabs, scroll-spy, contact form) | `src/scripts/site.ts` |
+| Downloads (resume, portfolio book) | `public/downloads/` — **placeholders**, replace with the real PDFs (same file names) |
 
 ## Images
 
 Every image is a placeholder from `picsum.photos` via the `img()` helper in `src/data/site.ts`.
-To go live: drop real assets in `public/images/` and replace the `img(...)` calls with paths (`/images/portrait.jpg`). The hero and page titles expect a **grayscale portrait** for the blue duotone treatment.
+To go live: drop real assets in `public/images/` and replace the `img(...)` calls with paths (`/images/portrait.jpg`).
+The hero and About expect a **grayscale portrait** — the CSS applies the blue duotone / low-key grade.
 
 ## Design system
 
@@ -37,5 +38,4 @@ To go live: drop real assets in `public/images/` and replace the `img(...)` call
 
 ## Forms
 
-No backend yet. The contact form composes a `mailto:`; the newsletter form only shows a confirmation.
-Wire either to an endpoint (Formspree, Supabase Edge Function, etc.) in `src/scripts/site.ts` — the forms are marked `data-contact` and `data-subscribe`.
+No backend yet: the contact form composes a `mailto:` to `site.email`. Wire it to an endpoint (Formspree, Supabase Edge Function…) in `src/scripts/site.ts` — the form is marked `data-contact`.

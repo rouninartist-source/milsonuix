@@ -6,6 +6,35 @@ const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = <T extends Element>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...root.querySelectorAll<T>(sel)];
 
+/* ─── Theme toggle — data-theme on <html>, remembered per browser ─── */
+{
+  const root = document.documentElement;
+  const buttons = $$<HTMLButtonElement>("[data-theme-toggle]");
+  const meta = $<HTMLMetaElement>('meta[name="theme-color"]');
+  const label = () =>
+    buttons.forEach((b) => {
+      const next = root.dataset.theme === "light" ? b.dataset.labelDark : b.dataset.labelLight;
+      if (next) b.setAttribute("aria-label", next), (b.title = next);
+    });
+  const apply = (theme: "light" | "dark", persist: boolean) => {
+    root.classList.add("theme-switching");
+    root.dataset.theme = theme;
+    if (meta) meta.content = theme === "light" ? "#e8eafa" : "#060910";
+    if (persist) {
+      try { localStorage.setItem("theme", theme); } catch {}
+    }
+    label();
+    setTimeout(() => root.classList.remove("theme-switching"), 400);
+  };
+  buttons.forEach((b) => b.addEventListener("click", () => apply(root.dataset.theme === "light" ? "dark" : "light", true)));
+  // follow the OS while the visitor hasn't chosen
+  matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
+    try { if (localStorage.getItem("theme")) return; } catch {}
+    apply(e.matches ? "light" : "dark", false);
+  });
+  label();
+}
+
 /* ─── Menu ─── */
 {
   const menu = $<HTMLElement>("#menu");

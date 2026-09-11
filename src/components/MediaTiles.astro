@@ -35,11 +35,11 @@ const tiles = [
   .tile {
     display: grid; gap: 22px; align-content: end; aspect-ratio: 1 / 1.15; padding: 18px;
     border-radius: var(--radius); border: 1px solid var(--line);
-    background: linear-gradient(to bottom, rgb(26 44 70 / 0.18), rgb(6 9 16 / 0.6));
+    background: linear-gradient(to bottom, var(--tile-a), var(--tile-b));
     color: var(--ink-3); transition: color 0.3s, border-color 0.3s, background 0.3s;
   }
-  .tile:hover, .tile.is-active { color: var(--frost); border-color: rgb(232 234 250 / 0.3); }
-  .tile.is-active { background: linear-gradient(to bottom, rgb(0 112 255 / 0.18), rgb(6 9 16 / 0.6)); }
+  .tile:hover, .tile.is-active { color: var(--ink); border-color: var(--tile-border-hover); }
+  .tile.is-active { background: linear-gradient(to bottom, var(--tile-active), var(--tile-b)); }
   .tile.is-active .tile__label { color: var(--blue); }
   .tile__label { font-size: 13px; }
   .tile__icon { width: 56px; height: 56px; opacity: 0.9; }

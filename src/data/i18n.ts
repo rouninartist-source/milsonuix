@@ -35,7 +35,7 @@ const en = {
     { label: "Journal", href: "/journal" },
     { label: "Contact", href: "/contact" },
   ],
-  menu: { open: "Open menu", close: "Close menu", follow: "Follow me", lang: "Language" },
+  menu: { open: "Open menu", close: "Close menu", follow: "Follow me", lang: "Language", theme: "Switch theme", light: "Light mode", dark: "Dark mode" },
   hero: { watch: "Watch my work on:", topics: "Showreel topics" },
   about: {
     label: "About",
@@ -86,7 +86,7 @@ const pt: UI = {
     { label: "Journal", href: "/journal" },
     { label: "Contacto", href: "/contact" },
   ],
-  menu: { open: "Abrir menu", close: "Fechar menu", follow: "Siga-me", lang: "Idioma" },
+  menu: { open: "Abrir menu", close: "Fechar menu", follow: "Siga-me", lang: "Idioma", theme: "Mudar tema", light: "Modo claro", dark: "Modo escuro" },
   hero: { watch: "Veja o meu trabalho em:", topics: "Temas do showreel" },
   about: {
     label: "Sobre",

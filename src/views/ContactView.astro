@@ -58,15 +58,15 @@ const c = t.contactPage;
 <style>
   .contact { row-gap: 48px; padding-top: clamp(16px, 3vw, 40px); }
   .contact__side { grid-column: 1 / -1; display: grid; gap: 12px; align-content: start; }
-  .contact__mail { color: var(--frost); transition: color 0.3s; }
+  .contact__mail { color: var(--ink); transition: color 0.3s; }
   .contact__mail:hover { color: var(--blue); }
   .contact__socials { display: grid; gap: 6px; margin-top: 12px; }
   .contact__socials a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); transition: color 0.3s; }
-  .contact__socials a:hover { color: var(--frost); }
+  .contact__socials a:hover { color: var(--ink); }
   .contact__form { grid-column: 1 / -1; display: grid; gap: 22px; justify-items: start; }
   .field { display: grid; gap: 8px; width: 100%; border: 0; padding: 0; margin: 0; min-width: 0; }
   .field input, .field textarea {
-    width: 100%; padding: 12px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--frost);
+    width: 100%; padding: 12px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink);
     border-radius: 0; transition: border-color 0.3s; resize: vertical;
   }
   .field input:focus, .field textarea:focus { outline: 0; border-color: var(--blue); }
@@ -75,7 +75,7 @@ const c = t.contactPage;
   .kind { position: relative; }
   .kind input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
   .kind .chip { height: 32px; padding-inline: 14px; font-size: 12px; cursor: pointer; transition: background 0.3s, color 0.3s, border-color 0.3s; }
-  .kind input:checked + .chip { background: var(--frost); color: var(--obsidian); border-color: var(--frost); }
+  .kind input:checked + .chip { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .kind input:focus-visible + .chip { outline: 2px solid var(--blue); outline-offset: 2px; }
   @media (min-width: 900px) {
     .contact__side { grid-column: 1 / span 4; }

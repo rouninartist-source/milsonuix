@@ -33,6 +33,10 @@ Localised text is a `{ en: "…", pt: "…" }` object read with `pick(value, lan
 Every image is a placeholder from `picsum.photos` via the `img()` helper in `src/data/site.ts`.
 To go live: drop real assets in `public/images/` and replace the `img(...)` calls with paths (`/images/portrait.jpg`). The hero and page titles expect a **grayscale portrait** for the blue duotone treatment.
 
+## Themes
+
+Dark is the default; light uses Frost Blue as the ground with Obsidian ink. The toggle (sun/moon, next to the language switcher) stores the choice in `localStorage`; with no choice the site follows the OS. All colours are tokens in `src/styles/global.css` — `:root` is the dark set, `[data-theme="light"]` overrides it, and `.on-dark` (the hero) keeps the dark set in both themes because it sits on a photograph.
+
 ## Design system
 
 - **Display**: Anton (stand-in for F37 Judge) — uppercase, `line-height: .84`

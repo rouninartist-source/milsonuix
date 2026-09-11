@@ -5,6 +5,7 @@ Created 2026-09-11. Sibling of `../quota-smart-pay` (same owner, same Hostinger 
 ## Status
 - All pages built and screenshot-verified at 1440 and 393 px: Home, About, Work (+6 case studies), Journal (+4 posts), Contact, 404 — in EN (`/`) and PT (`/pt/…`), 31 pages.
 - Language switcher in the nav and in the menu; `hreflang` alternates on every page.
+- Light/dark theme: system default, sun/moon toggle, remembered per browser, no flash on load.
 - Zero console errors, no horizontal overflow.
 - On GitHub: `rouninartist-source/milsonuix`, branch `main`. Not yet deployed.
 - 2026-09-11: a one-page "Mushin Designer" variant (from `mushin-designer-website-content.md`) was built and then reverted at the owner's request — the content doc is being reworked. That version is commit `88f47ea` if any of it is wanted back.

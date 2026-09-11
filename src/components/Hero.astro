@@ -7,7 +7,7 @@ const { lang } = Astro.props;
 const t = ui[lang];
 const portrait = img("milson-portrait", 1600, 2000, true);
 ---
-<section class="hero" data-hero>
+<section class="hero on-dark" data-hero>
   <div class="hero__media" aria-hidden="true">
     <img src={portrait} alt="" class="is-active" data-backdrop="" fetchpriority="high" />
     {pillars.map((p) => <img src={img(p.seed, 1600, 2000, true)} alt="" data-backdrop={p.id} loading="lazy" />)}
@@ -62,11 +62,11 @@ const portrait = img("milson-portrait", 1600, 2000, true);
   .hero__scrim {
     position: absolute; inset: 0;
     background:
-      linear-gradient(to bottom, rgb(6 9 16 / 0.55) 0%, rgb(6 9 16 / 0) 28%, rgb(6 9 16 / 0.25) 58%, var(--bg) 100%),
+      linear-gradient(to bottom, rgb(6 9 16 / 0.55) 0%, rgb(6 9 16 / 0) 28%, rgb(6 9 16 / 0.25) 58%, var(--hero-end) 100%),
       radial-gradient(90% 70% at 50% 40%, transparent 40%, rgb(6 9 16 / 0.55) 100%);
   }
   .hero__content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding-top: calc(var(--nav-h) + 24px); }
-  .hero__tag { max-width: 15ch; color: var(--frost); }
+  .hero__tag { max-width: 15ch; color: var(--ink); }
   @media (min-width: 900px) {
     .hero__tag { margin-left: auto; margin-top: 6vh; width: calc((100% - 11 * var(--gutter)) / 12 * 4 + 3 * var(--gutter)); max-width: none; }
   }
@@ -76,23 +76,23 @@ const portrait = img("milson-portrait", 1600, 2000, true);
   .hero__pills { display: flex; flex-wrap: wrap; gap: 6px; }
   .pill {
     display: inline-flex; align-items: center; gap: 7px; height: 34px; padding-inline: 12px 14px;
-    border: 1px solid rgb(232 234 250 / 0.28); border-radius: 999px;
+    border: 1px solid var(--btn-border); border-radius: 999px;
     font-size: 12px; font-weight: 500; color: var(--ink);
-    background: rgb(6 9 16 / 0.35); backdrop-filter: blur(8px);
+    background: var(--btn-bg); backdrop-filter: blur(8px);
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease);
   }
   .pill :global(svg) { width: 11px; height: 11px; }
-  .pill:hover { border-color: var(--frost); }
-  .pill.is-active { background: var(--frost); color: var(--obsidian); border-color: var(--frost); }
+  .pill:hover { border-color: var(--ink); }
+  .pill.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
   /* Giant text: the name at rest, the topic strip while a pill plays. */
   .hero__giant { position: relative; height: clamp(76px, 15.5vw, 236px); overflow: hidden; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); }
   .hero__name,
   .hero__strip { position: absolute; inset: 0 auto auto var(--margin); transition: opacity 0.6s var(--ease), transform 0.8s var(--ease); }
-  .hero__name { font-size: clamp(76px, 15.5vw, 236px); white-space: nowrap; color: var(--frost); }
+  .hero__name { font-size: clamp(76px, 15.5vw, 236px); white-space: nowrap; color: var(--ink); }
   .hero__strip { width: 100%; left: 0; padding-inline: var(--margin); font-size: clamp(76px, 15.5vw, 236px); opacity: 0; transform: translateY(12%); white-space: nowrap; }
   .hero__track { display: inline-flex; gap: 0.35em; will-change: transform; }
-  .hero__track span { color: rgb(232 234 250 / 0.22); transition: color 0.5s var(--ease); }
+  .hero__track span { color: var(--ink-4); transition: color 0.5s var(--ease); }
   .hero__track span.is-active { color: var(--blue); }
   .hero.is-playing .hero__name { opacity: 0; transform: translateY(-12%); }
   .hero.is-playing .hero__strip { opacity: 1; transform: none; }

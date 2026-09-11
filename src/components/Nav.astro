@@ -19,6 +19,10 @@ const switchTo = (l: Lang) => href(l, path);
           <li><a href={switchTo(l)} class:list={{ "is-active": l === lang }} hreflang={l} lang={l}>{l.toUpperCase()}</a></li>
         ))}
       </ul>
+      <button type="button" class="theme" data-theme-toggle aria-label={t.menu.theme} data-label-light={t.menu.light} data-label-dark={t.menu.dark} title={t.menu.theme}>
+        <Icon name="sun" size={14} class="theme__sun" />
+        <Icon name="moon" size={14} class="theme__moon" />
+      </button>
       <button class="nav__burger" type="button" aria-label={t.menu.open} aria-expanded="false" aria-controls="menu" data-menu-toggle>
         <span></span><span></span><span></span>
       </button>
@@ -51,11 +55,17 @@ const switchTo = (l: Lang) => href(l, path);
         <li><a href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.short as "li"} size={14} /></a></li>
       ))}
     </ul>
-    <ul class="nav__lang menu__lang">
+    <div class="menu__lang">
+    <button type="button" class="theme" data-theme-toggle aria-label={t.menu.theme} data-label-light={t.menu.light} data-label-dark={t.menu.dark} title={t.menu.theme}>
+      <Icon name="sun" size={14} class="theme__sun" />
+      <Icon name="moon" size={14} class="theme__moon" />
+    </button>
+    <ul class="nav__lang">
       {langs.map((l) => (
         <li><a href={switchTo(l)} class:list={{ "is-active": l === lang }} hreflang={l} lang={l}>{l.toUpperCase()}</a></li>
       ))}
     </ul>
+    </div>
     <a href={`mailto:${site.email}`} class="menu__mail small">{site.email}</a>
   </div>
 </nav>
@@ -66,16 +76,21 @@ const switchTo = (l: Lang) => href(l, path);
     inset: 0 0 auto 0;
     z-index: 40;
     height: var(--nav-h);
-    background: linear-gradient(to bottom, rgb(6 9 16 / 0.6), transparent);
+    background: linear-gradient(to bottom, var(--nav-scrim), transparent);
     pointer-events: none;
   }
   .nav__row { height: 100%; display: flex; align-items: center; justify-content: space-between; }
   .nav__row > * { pointer-events: auto; }
   .nav__logo { font-size: 20px; line-height: 1; letter-spacing: 0.01em; }
-  .nav__right { display: flex; align-items: center; gap: 22px; }
+  .nav__right { display: flex; align-items: center; gap: 18px; }
+  .theme { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--ink-3); transition: color 0.3s, background 0.3s; }
+  .theme:hover { color: var(--ink); background: var(--line); }
+  .theme :global(svg) { grid-area: 1 / 1; transition: opacity 0.3s, transform 0.4s var(--ease); }
+  .theme :global(.theme__sun) { opacity: var(--sun); transform: rotate(calc((1 - var(--sun)) * 40deg)) scale(calc(0.6 + 0.4 * var(--sun))); }
+  .theme :global(.theme__moon) { opacity: var(--moon); transform: rotate(calc((var(--moon) - 1) * 40deg)) scale(calc(0.6 + 0.4 * var(--moon))); }
   .nav__lang { display: flex; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; }
   .nav__lang a { color: var(--ink-3); transition: color 0.3s; }
-  .nav__lang a:hover, .nav__lang a.is-active { color: var(--frost); }
+  .nav__lang a:hover, .nav__lang a.is-active { color: var(--ink); }
   .nav__lang a.is-active { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--blue); }
 
   .nav__burger {
@@ -97,7 +112,7 @@ const switchTo = (l: Lang) => href(l, path);
     z-index: 50;
     display: flex;
     flex-direction: column;
-    background: var(--obsidian);
+    background: var(--surface);
     clip-path: inset(0 0 100% 0);
     visibility: hidden;
     transition: clip-path 0.7s var(--ease), visibility 0s 0.7s;
@@ -124,7 +139,7 @@ const switchTo = (l: Lang) => href(l, path);
     transition: color 0.3s var(--ease), transform 0.5s var(--ease);
   }
   .menu__link sup { font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-3); align-self: flex-start; margin-top: 0.3em; }
-  .menu__link:hover, .menu__link.is-active { color: var(--frost); }
+  .menu__link:hover, .menu__link.is-active { color: var(--ink); }
   .menu__link.is-active { color: var(--blue); }
   .menu__link :global(.menu__arrow) { opacity: 0; transform: translateX(-12px); transition: opacity 0.3s, transform 0.4s var(--ease); align-self: center; }
   .menu__link:hover :global(.menu__arrow) { opacity: 1; transform: none; }
@@ -136,8 +151,8 @@ const switchTo = (l: Lang) => href(l, path);
     border: 1px solid var(--line); border-radius: 50%; color: var(--ink-2);
     transition: background 0.3s, color 0.3s, border-color 0.3s;
   }
-  .menu__socials a:hover { background: var(--frost); color: var(--obsidian); border-color: var(--frost); }
-  .menu__lang { margin-left: auto; }
+  .menu__socials a:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .menu__lang { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .menu__mail { color: var(--ink-3); }
-  .menu__mail:hover { color: var(--frost); }
+  .menu__mail:hover { color: var(--ink); }
 </style>

@@ -69,13 +69,13 @@ const t = ui[lang];
     position: absolute; left: 0; top: 0; z-index: 0;
     /* never wider than ~55% of the container, whatever the language's longest word */
     font-size: min(clamp(88px, 14vw, 200px), calc((100vw - 2 * var(--margin)) * 0.55 / (var(--chars, 5) * 0.56))); line-height: 0.84;
-    color: rgb(26 44 70 / 0.5); user-select: none; pointer-events: none;
+    color: var(--giant); user-select: none; pointer-events: none;
   }
   .story__panel { position: relative; z-index: 1; row-gap: 24px; }
   .story__media { grid-column: 2 / -1; max-width: 360px; }
   .story__text { grid-column: 1 / -1; display: grid; gap: 12px; align-content: center; max-width: 34ch; }
   .story__year { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
-  .story__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--frost); }
+  .story__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
   .story__cta { position: relative; z-index: 1; margin-top: 28px; display: flex; justify-content: center; }
   @media (min-width: 900px) {
     .story__stage { padding-block: clamp(48px, 6vw, 96px); }
@@ -95,8 +95,8 @@ const t = ui[lang];
   .story__tab:last-child::after { left: auto; right: 0; margin-left: 0; }
   .story__tab.is-reached { color: var(--blue); }
   .story__tab.is-reached::after { background: var(--blue); }
-  .story__tab.is-active { color: var(--frost); }
-  .story__tab:hover { color: var(--frost); }
+  .story__tab.is-active { color: var(--ink); }
+  .story__tab:hover { color: var(--ink); }
 
   .about__manifesto { max-width: 34ch; margin-inline: auto; text-align: center; padding-block: clamp(24px, 6vw, 80px); }
   .facts__grid { margin-top: clamp(28px, 4vw, 56px); row-gap: 28px; }

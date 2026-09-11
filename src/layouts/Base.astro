@@ -21,6 +21,18 @@ const { path } = fromPath(Astro.url.pathname);
     <link rel="canonical" href={canonical} />
     {langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(href(l, path), Astro.site)} />)}
     <meta name="theme-color" content="#060910" />
+    <script is:inline>
+      // Resolve the theme before first paint: saved choice, else the system preference.
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+          const system = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          const theme = saved === "light" || saved === "dark" ? saved : system;
+          document.documentElement.dataset.theme = theme;
+          document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#e8eafa" : "#060910";
+        } catch {}
+      })();
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />

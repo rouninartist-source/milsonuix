@@ -1,4 +1,9 @@
 ---
+/**
+ * Practice areas as a boxed panel with three numbered columns.
+ * One column is open; clicking another rail pushes the open one shut
+ * (it slides to its rail) and expands the clicked one — a horizontal accordion.
+ */
 import { pillars, img } from "../data/site";
 import { ui, href, pick, type Lang } from "../data/i18n";
 import Button from "./Button.astro";
@@ -7,77 +12,93 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui[lang];
 ---
-<section class="pillars">
-  <div class="container section" data-tabs data-active="brand">
-    <div class="grid pillars__grid">
-      <div class="pillars__tabs" role="tablist" aria-label={t.pillars.areas}>
-        {pillars.map((p, i) => (
-          <button type="button" role="tab" class="pillars__tab" data-tab={p.id} aria-selected="false">
-            <span class="pillars__n">{String(i + 1).padStart(2, "0")}</span>
-            <span>{pick(p.label, lang)}</span>
-          </button>
-        ))}
-      </div>
-
-      <div class="pillars__body">
-        {pillars.map((p) => (
-          <div class="pillars__panel" data-panel={p.id} role="tabpanel" hidden>
-            <p class="statement">{pick(p.statement, lang)}</p>
-            <div class="pillars__lower">
-              <a href={`${href(lang, "/work")}?f=${p.id}`} class="pillars__thumb media media--landscape media--scrim">
+<section class="container section pillars">
+  <div class="pillars__panel" data-accordion data-active="brand">
+    {pillars.map((p, i) => (
+      <article class="pillar" data-pillar={p.id} aria-expanded="false">
+        <button type="button" class="pillar__rail" data-rail={p.id} aria-controls={`pillar-${p.id}`} aria-label={pick(p.label, lang)}>
+          <span class="pillar__n">{String(i + 1).padStart(2, "0")}</span>
+          <span class="pillar__label">{pick(p.label, lang)}</span>
+        </button>
+        <div class="pillar__body" id={`pillar-${p.id}`}>
+          <div class="pillar__inner">
+            <p class="statement pillar__statement">{pick(p.statement, lang)}</p>
+            <div class="pillar__lower">
+              <a href={`${href(lang, "/work")}?f=${p.id}`} class="pillar__thumb media media--landscape media--scrim">
                 <img src={img(p.seed + "-thumb", 800, 500)} alt="" loading="lazy" />
                 <span class="btn btn--sm"><Icon name="play" />{t.pillars.see}</span>
               </a>
               <p class="small body">{pick(p.body, lang)}</p>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-    <Button href={href(lang, "/work")} icon="arrow" class="pillars__all" variant="ghost">{t.pillars.all}</Button>
+        </div>
+      </article>
+    ))}
   </div>
+  <Button href={href(lang, "/work")} icon="arrow" class="pillars__all" variant="ghost">{t.pillars.all}</Button>
 </section>
 
 <style>
-  .pillars { background: linear-gradient(to bottom, var(--bg), var(--bg-2) 50%, var(--bg)); }
-  .pillars__grid { row-gap: 28px; }
-  .pillars__tabs { grid-column: 1 / -1; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-  .pillars__tabs::-webkit-scrollbar { display: none; }
-  .pillars__tab {
-    display: inline-flex; align-items: center; gap: 10px; flex: none;
-    padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line);
-    font-size: 12px; color: var(--ink-3); transition: color 0.3s, border-color 0.3s;
-  }
-  .pillars__n { font-size: 10px; letter-spacing: 0.1em; }
-  .pillars__tab:hover { color: var(--ink); }
-  .pillars__tab.is-active { color: var(--ink); border-color: var(--ink); }
-  .pillars__body { grid-column: 1 / -1; }
-  .pillars__panel { display: grid; gap: 28px; }
-  .pillars__lower { display: grid; gap: 20px; }
-  .pillars__thumb { position: relative; max-width: 300px; }
-  .pillars__thumb .btn { position: absolute; left: 12px; bottom: 12px; z-index: 1; }
-  .pillars__lower p { max-width: 36ch; }
-  .pillars__all { margin-top: 28px; }
+  .pillars__all { margin-top: 24px; }
 
-  @media (min-width: 900px) {
-    /* Vertical rails on both edges — 01 on the left, 02 / 03 on the right — like the reference. */
-    .pillars__grid { grid-template-rows: auto; align-items: start; }
-    .pillars__tabs { grid-column: 1 / -1; display: contents; }
-    .pillars__tab {
-      writing-mode: vertical-rl; transform: rotate(180deg);
-      padding: 0; border: 0; border-radius: 0; gap: 12px; align-self: start;
-      height: 100%;
-    }
-    .pillars__tab[data-tab="brand"] { grid-column: 1; grid-row: 1; justify-self: start; }
-    .pillars__tab[data-tab="product"] { grid-column: 11; grid-row: 1; justify-self: end; }
-    .pillars__tab[data-tab="motion"] { grid-column: 12; grid-row: 1; justify-self: end; }
-    .pillars__tab.is-active { border: 0; }
-    .pillars__tab.is-active .pillars__n { color: var(--blue); }
-    .pillars__body { grid-column: 2 / 11; grid-row: 1; padding-inline: var(--gutter); }
-    .pillars__panel { grid-template-columns: repeat(9, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 56px; }
-    .pillars__panel .statement { grid-column: 1 / span 6; }
-    .pillars__lower { grid-column: 1 / -1; grid-template-columns: repeat(9, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
-    .pillars__thumb { grid-column: 1 / span 3; max-width: none; }
-    .pillars__lower p { grid-column: 5 / span 4; }
+  /* the boxed panel with the blue gloom, like the reference */
+  .pillars__panel {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background:
+      radial-gradient(90% 80% at 15% 110%, rgb(0 112 255 / 0.22), transparent 60%),
+      radial-gradient(70% 60% at 100% 0%, rgb(26 44 70 / 0.5), transparent 60%),
+      linear-gradient(to bottom, var(--tile-a), var(--tile-b));
+    container-type: inline-size;
+    --rail: 56px;
+  }
+
+  .pillar { position: relative; display: flex; flex: 0 0 var(--rail); min-width: 0; transition: flex-basis 0.8s var(--ease); }
+  .pillar[aria-expanded="true"] { flex-basis: calc(100cqw - 2 * var(--rail)); }
+  .pillar + .pillar { border-left: 1px solid var(--line); }
+
+  .pillar__rail {
+    flex: 0 0 var(--rail);
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding-block: 22px; color: var(--ink-3); cursor: pointer;
+    transition: color 0.3s, background 0.3s;
+  }
+  .pillar__rail:hover { color: var(--ink); background: rgb(255 255 255 / 0.03); }
+  .pillar[aria-expanded="true"] .pillar__rail { color: var(--ink); cursor: default; }
+  .pillar[aria-expanded="true"] .pillar__n { color: var(--blue); }
+  .pillar__n { font-size: 11px; letter-spacing: 0.12em; font-weight: 500; }
+  .pillar__label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; white-space: nowrap; }
+
+  /* content keeps its final width during the push, so the text never reflows mid-animation */
+  .pillar__body { flex: 1; min-width: 0; overflow: hidden; }
+  .pillar__inner {
+    width: calc(100cqw - 3 * var(--rail));
+    display: grid; gap: clamp(32px, 6cqw, 72px);
+    padding: clamp(24px, 4cqw, 56px) clamp(20px, 3cqw, 40px) clamp(24px, 4cqw, 56px) clamp(8px, 1.5cqw, 24px);
+    opacity: 0; transform: translateX(24px);
+    transition: opacity 0.5s var(--ease), transform 0.8s var(--ease);
+  }
+  .pillar[aria-expanded="true"] .pillar__inner { opacity: 1; transform: none; transition-delay: 0.15s; }
+  .pillar__statement { max-width: 22ch; }
+  .pillar__lower { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); gap: clamp(20px, 4cqw, 56px); align-items: end; }
+  .pillar__thumb { position: relative; }
+  .pillar__thumb .btn { position: absolute; left: 12px; bottom: 12px; z-index: 1; }
+  .pillar__lower p { max-width: 34ch; }
+
+  /* phones: stack the columns, rails become headers, open one grows in height */
+  @media (max-width: 699px) {
+    .pillars__panel { flex-direction: column; }
+    .pillar { flex: none; flex-direction: column; transition: none; }
+    .pillar + .pillar { border-left: 0; border-top: 1px solid var(--line); }
+    .pillar__rail { flex: none; flex-direction: row; align-items: center; gap: 12px; padding: 16px; }
+    .pillar__label { writing-mode: horizontal-tb; transform: none; }
+    .pillar__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease); }
+    .pillar[aria-expanded="true"] .pillar__body { grid-template-rows: 1fr; }
+    .pillar__body > * { min-height: 0; }
+    .pillar__inner { width: auto; padding: 0 16px 20px; transform: translateY(12px); }
+    .pillar__lower { grid-template-columns: 1fr; }
   }
 </style>

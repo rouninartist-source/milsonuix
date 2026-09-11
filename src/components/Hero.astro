@@ -32,7 +32,9 @@ const portrait = img("milson-portrait", 1600, 2000, true);
       </div>
 
       <div class="hero__giant" aria-hidden="true">
-        <p class="hero__name display">{site.brand}</p>
+        <p class="hero__name display" style={`--chars:${site.person.length}`}>
+          {site.person.split(" ").map((w, i) => <>{i > 0 && " "}<span>{w}</span></>)}
+        </p>
         <div class="hero__strip display">
           <div class="hero__track">
             {[0, 1].map(() => pillars.map((p) => <span data-word={p.id}>{pick(p.short, lang).replace("/", "·")}</span>))}
@@ -86,11 +88,17 @@ const portrait = img("milson-portrait", 1600, 2000, true);
   .pill.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
   /* Giant text: the name at rest, the topic strip while a pill plays. */
-  .hero__giant { position: relative; height: clamp(76px, 15.5vw, 236px); overflow: hidden; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); }
+  /* The name fills the width in one line on desktop; on phones it breaks into two lines. */
+  .hero__giant { position: relative; overflow: hidden; margin-inline: calc(var(--margin) * -1); padding-inline: var(--margin); }
   .hero__name,
-  .hero__strip { position: absolute; inset: 0 auto auto var(--margin); transition: opacity 0.6s var(--ease), transform 0.8s var(--ease); }
-  .hero__name { font-size: clamp(76px, 15.5vw, 236px); white-space: nowrap; color: var(--ink); }
-  .hero__strip { width: 100%; left: 0; padding-inline: var(--margin); font-size: clamp(76px, 15.5vw, 236px); opacity: 0; transform: translateY(12%); white-space: nowrap; }
+  .hero__strip { transition: opacity 0.6s var(--ease), transform 0.8s var(--ease); }
+  .hero__name { position: relative; font-size: min(calc((100vw - 2 * var(--margin)) / (var(--chars) * 0.56)), 236px); white-space: nowrap; color: var(--ink); }
+  .hero__name span { display: inline-block; }
+  @media (max-width: 699px) {
+    .hero__name { font-size: min(21.5vw, 120px); }
+    .hero__name span { display: block; margin: 0; }
+  }
+  .hero__strip { position: absolute; inset: 0 auto auto 0; width: 100%; padding-inline: var(--margin); font-size: clamp(76px, 15.5vw, 236px); opacity: 0; transform: translateY(12%); white-space: nowrap; }
   .hero__track { display: inline-flex; gap: 0.35em; will-change: transform; }
   .hero__track span { color: var(--ink-4); transition: color 0.5s var(--ease); }
   .hero__track span.is-active { color: var(--blue); }

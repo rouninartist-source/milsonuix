@@ -11,7 +11,7 @@ const tiles = [
   { label: t.explore.tiles[2], href: href(lang, "/journal"), icon: "dots" },
 ];
 ---
-<section class="container section tiles">
+<section class="container section tiles" style="overflow:clip">
   <SectionRule n="03" label={t.explore.label} />
   <div class="grid tiles__grid">
     <p class="statement tiles__lead" data-reveal>{t.explore.lead}</p>
@@ -29,9 +29,14 @@ const tiles = [
 </section>
 
 <style>
-  .tiles__grid { margin-top: clamp(28px, 4vw, 56px); row-gap: 40px; }
+  .tiles__grid { position: relative; isolation: isolate; margin-top: clamp(28px, 4vw, 56px); row-gap: 40px; }
   .tiles__lead { grid-column: 1 / -1; max-width: 22ch; }
-  .tiles__list { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .tiles__list { position: relative; grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .tiles__list::before {
+    content: ""; position: absolute; inset: -30% -10% -40% -20%; z-index: -1; pointer-events: none;
+    background: radial-gradient(45% 60% at 12% 85%, rgb(0 112 255 / 0.28), transparent 70%);
+    filter: blur(24px);
+  }
   .tile {
     display: grid; gap: 22px; align-content: end; aspect-ratio: 1 / 1.15; padding: 18px;
     border-radius: var(--radius); border: 1px solid var(--line);

@@ -162,6 +162,19 @@ const $$ = <T extends Element>(sel: string, root: ParentNode = document) => [...
   }
 }
 
+/* ─── Horizontal accordion (practice areas): one open column, the rest are rails ─── */
+{
+  $$<HTMLElement>("[data-accordion]").forEach((box) => {
+    const items = $$<HTMLElement>("[data-pillar]", box);
+    const open = (id: string) => {
+      items.forEach((it) => it.setAttribute("aria-expanded", String(it.dataset.pillar === id)));
+      box.dataset.active = id;
+    };
+    $$<HTMLButtonElement>("[data-rail]", box).forEach((r) => r.addEventListener("click", () => open(r.dataset.rail!)));
+    open(box.dataset.active || items[0]?.dataset.pillar || "");
+  });
+}
+
 /* ─── Tab groups (pillars, story timeline): [data-tabs] > [data-tab=id] / [data-panel=id] ─── */
 {
   $$<HTMLElement>("[data-tabs]").forEach((group) => {

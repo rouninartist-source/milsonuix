@@ -7,6 +7,8 @@ import type { L } from "./i18n";
  */
 export const site = {
   name: "Milson",
+  /** Full name — the giant hero and footer text. */
+  person: "Milson Ferreira",
   brand: "Milson UIX",
   role: { en: "Multidisciplinary graphic designer, focused on UI/UX", pt: "Designer gráfico multidisciplinar, focado em UI/UX" } as L,
   tagline: { en: "Transforming brands with visionary design", pt: "A transformar marcas com design visionário" } as L,

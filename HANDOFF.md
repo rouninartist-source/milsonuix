@@ -10,15 +10,11 @@ Created 2026-09-11. Sibling of `../quota-smart-pay` (same owner, same Hostinger 
 - On GitHub: `rouninartist-source/milsonuix`, branch `main`. Not yet deployed.
 - 2026-09-11: a one-page "Mushin Designer" variant (from `mushin-designer-website-content.md`) was built and then reverted at the owner's request — the content doc is being reworked. That version is commit `88f47ea` if any of it is wanted back.
 
-## Deploy plan (Hostinger)
-The apex `milsonuix.com` currently runs the **Quota** Web App by mistake (it should live at `quota.milsonuix.com`).
-Order of operations:
-1. Finish moving Quota to `quota.milsonuix.com` (new Web App on the subdomain — in progress in hPanel).
-2. Delete the Web App bound to `milsonuix.com`.
-3. Websites → Add website → Web App → domain `milsonuix.com` → GitHub repo `milsonuix`, branch `main`.
-   Framework: Astro (static). Build `npm run build`, output `dist`. No env vars needed.
-   Alternative if Web Apps refuses a static framework: add as a plain website and upload `dist/` (or use Git deploy pointing at `dist`).
-4. `public/.htaccess` already maps 404s to `/404.html`.
+## Deployed — 2026-09-12
+- **https://milsonuix.com** serves this site (EN `/`, PT `/pt/`), 404 mapped, all routes 200.
+- Deploy = `./deploy.sh` (build + rsync `dist/` → `domains/milsonuix.com/public_html` over SSH :65002). Repeat on every change.
+- **Quota** is live on **https://quota.milsonuix.com** (Hostinger Web App from `quota-smart-pay`, branch `main`).
+- Housekeeping still to do in hPanel: the apex `milsonuix.com` is still registered as a *Web App* (its Passenger `.htaccess` was replaced by ours). Delete that Web App in hPanel (Websites → milsonuix.com → ⋮ → Delete) so a future hPanel redeploy can't put Quota back on the apex. If deleting wipes `public_html`, run `./deploy.sh` again.
 
 ## Open items
 - Real photography + copy (all mock, see README → Images).

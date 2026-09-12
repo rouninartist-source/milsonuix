@@ -48,3 +48,7 @@ Dark is the default; light uses Frost Blue as the ground with Obsidian ink. The 
 
 No backend yet. The contact form composes a `mailto:`; the newsletter form only shows a confirmation.
 Wire either to an endpoint (Formspree, Supabase Edge Function, etc.) in `src/scripts/site.ts` — the forms are marked `data-contact` and `data-subscribe`.
+
+## Deploy
+
+`./deploy.sh` builds and rsyncs `dist/` to `domains/milsonuix.com/public_html` on Hostinger over SSH (port 65002, key auth), then checks the main routes. `./deploy.sh --dry-run` previews. The domain must be a plain website in hPanel (not a Web App) — Web Apps own `public_html` via Passenger.

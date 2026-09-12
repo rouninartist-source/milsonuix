@@ -12,19 +12,19 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui[lang];
 ---
-<section class="container section pillars">
-  <div class="pillars__panel" data-accordion data-active="brand">
+<section class="container section practice">
+  <div class="practice__panel" data-accordion data-active="brand">
     {pillars.map((p, i) => (
-      <article class="pillar" data-pillar={p.id} aria-expanded="false">
-        <button type="button" class="pillar__rail" data-rail={p.id} aria-controls={`pillar-${p.id}`} aria-label={pick(p.label, lang)}>
-          <span class="pillar__n">{String(i + 1).padStart(2, "0")}</span>
-          <span class="pillar__label">{pick(p.label, lang)}</span>
+      <article class="pcol" data-pillar={p.id} aria-expanded="false">
+        <button type="button" class="pcol__rail" data-rail={p.id} aria-controls={`pillar-${p.id}`} aria-label={pick(p.label, lang)}>
+          <span class="pcol__n">{String(i + 1).padStart(2, "0")}</span>
+          <span class="pcol__label">{pick(p.label, lang)}</span>
         </button>
-        <div class="pillar__body" id={`pillar-${p.id}`}>
-          <div class="pillar__inner">
-            <p class="statement pillar__statement">{pick(p.statement, lang)}</p>
-            <div class="pillar__lower">
-              <a href={`${href(lang, "/work")}?f=${p.id}`} class="pillar__thumb media media--landscape media--scrim">
+        <div class="pcol__body" id={`pillar-${p.id}`}>
+          <div class="pcol__inner">
+            <p class="statement pcol__statement">{pick(p.statement, lang)}</p>
+            <div class="pcol__lower">
+              <a href={`${href(lang, "/work")}?f=${p.id}`} class="pcol__thumb media media--landscape media--scrim">
                 <img src={img(p.seed + "-thumb", 800, 500)} alt="" loading="lazy" />
                 <span class="btn btn--sm"><Icon name="play" />{t.pillars.see}</span>
               </a>
@@ -35,14 +35,14 @@ const t = ui[lang];
       </article>
     ))}
   </div>
-  <Button href={href(lang, "/work")} icon="arrow" class="pillars__all" variant="ghost">{t.pillars.all}</Button>
+  <Button href={href(lang, "/work")} icon="arrow" class="practice__all" variant="ghost">{t.pillars.all}</Button>
 </section>
 
 <style>
-  .pillars__all { margin-top: 24px; }
+  .practice__all { margin-top: 24px; }
 
   /* the boxed panel with the blue gloom, like the reference */
-  .pillars__panel {
+  .practice__panel {
     position: relative;
     display: flex;
     overflow: hidden;
@@ -56,49 +56,49 @@ const t = ui[lang];
     --rail: 56px;
   }
 
-  .pillar { position: relative; display: flex; flex: 0 0 var(--rail); min-width: 0; transition: flex-basis 0.8s var(--ease); }
-  .pillar[aria-expanded="true"] { flex-basis: calc(100cqw - 2 * var(--rail)); }
-  .pillar + .pillar { border-left: 1px solid var(--line); }
+  .pcol { position: relative; display: flex; flex: 0 0 var(--rail); min-width: 0; transition: flex-basis 0.8s var(--ease); }
+  .pcol[aria-expanded="true"] { flex-basis: calc(100cqw - 2 * var(--rail)); }
+  .pcol + .pcol { border-left: 1px solid var(--line); }
 
-  .pillar__rail {
+  .pcol__rail {
     flex: 0 0 var(--rail);
     display: flex; flex-direction: column; align-items: center; gap: 14px;
     padding-block: 22px; color: var(--ink-3); cursor: pointer;
     transition: color 0.3s, background 0.3s;
   }
-  .pillar__rail:hover { color: var(--ink); background: rgb(255 255 255 / 0.03); }
-  .pillar[aria-expanded="true"] .pillar__rail { color: var(--ink); cursor: default; }
-  .pillar[aria-expanded="true"] .pillar__n { color: var(--blue); }
-  .pillar__n { font-size: 11px; letter-spacing: 0.12em; font-weight: 500; }
-  .pillar__label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; white-space: nowrap; }
+  .pcol__rail:hover { color: var(--ink); background: rgb(255 255 255 / 0.03); }
+  .pcol[aria-expanded="true"] .pcol__rail { color: var(--ink); cursor: default; }
+  .pcol[aria-expanded="true"] .pcol__n { color: var(--blue); }
+  .pcol__n { font-size: 11px; letter-spacing: 0.12em; font-weight: 500; }
+  .pcol__label { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; white-space: nowrap; }
 
   /* content keeps its final width during the push, so the text never reflows mid-animation */
-  .pillar__body { flex: 1; min-width: 0; overflow: hidden; }
-  .pillar__inner {
+  .pcol__body { flex: 1; min-width: 0; overflow: hidden; }
+  .pcol__inner {
     width: calc(100cqw - 3 * var(--rail));
     display: grid; gap: clamp(32px, 6cqw, 72px);
     padding: clamp(24px, 4cqw, 56px) clamp(20px, 3cqw, 40px) clamp(24px, 4cqw, 56px) clamp(8px, 1.5cqw, 24px);
     opacity: 0; transform: translateX(24px);
     transition: opacity 0.5s var(--ease), transform 0.8s var(--ease);
   }
-  .pillar[aria-expanded="true"] .pillar__inner { opacity: 1; transform: none; transition-delay: 0.15s; }
-  .pillar__statement { max-width: 22ch; }
-  .pillar__lower { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); gap: clamp(20px, 4cqw, 56px); align-items: end; }
-  .pillar__thumb { position: relative; }
-  .pillar__thumb .btn { position: absolute; left: 12px; bottom: 12px; z-index: 1; }
-  .pillar__lower p { max-width: 34ch; }
+  .pcol[aria-expanded="true"] .pcol__inner { opacity: 1; transform: none; transition-delay: 0.15s; }
+  .pcol__statement { max-width: 22ch; }
+  .pcol__lower { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); gap: clamp(20px, 4cqw, 56px); align-items: end; }
+  .pcol__thumb { position: relative; }
+  .pcol__thumb .btn { position: absolute; left: 12px; bottom: 12px; z-index: 1; }
+  .pcol__lower p { max-width: 34ch; }
 
   /* phones: stack the columns, rails become headers, open one grows in height */
   @media (max-width: 699px) {
-    .pillars__panel { flex-direction: column; }
-    .pillar { flex: none; flex-direction: column; transition: none; }
-    .pillar + .pillar { border-left: 0; border-top: 1px solid var(--line); }
-    .pillar__rail { flex: none; flex-direction: row; align-items: center; gap: 12px; padding: 16px; }
-    .pillar__label { writing-mode: horizontal-tb; transform: none; }
-    .pillar__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease); }
-    .pillar[aria-expanded="true"] .pillar__body { grid-template-rows: 1fr; }
-    .pillar__body > * { min-height: 0; }
-    .pillar__inner { width: auto; padding: 0 16px 20px; transform: translateY(12px); }
-    .pillar__lower { grid-template-columns: 1fr; }
+    .practice__panel { flex-direction: column; }
+    .pcol { flex: none; flex-direction: column; transition: none; }
+    .pcol + .pcol { border-left: 0; border-top: 1px solid var(--line); }
+    .pcol__rail { flex: none; flex-direction: row; align-items: center; gap: 12px; padding: 16px; }
+    .pcol__label { writing-mode: horizontal-tb; transform: none; }
+    .pcol__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease); }
+    .pcol[aria-expanded="true"] .pcol__body { grid-template-rows: 1fr; }
+    .pcol__body > * { min-height: 0; }
+    .pcol__inner { width: auto; padding: 0 16px 20px; transform: translateY(12px); }
+    .pcol__lower { grid-template-columns: 1fr; }
   }
 </style>
